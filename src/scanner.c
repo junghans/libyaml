@@ -2474,6 +2474,12 @@ yaml_parser_scan_tag(yaml_parser_t *parser, yaml_token_t *token)
 
     if (!CACHE(parser, 1)) goto error;
 
+    if (!CHECK(parser->buffer, ',') && !IS_BLANKZ(parser->buffer)) {
+        yaml_parser_set_scanner_error(parser, "while scanning a tag",
+                start_mark, "did not find expected whitespace or line break");
+        goto error;
+    }
+
     end_mark = parser->mark;
 
     /* Create a token. */
